@@ -68,6 +68,80 @@ void insertSorted(int value) {
     printf("Inserted %d in sorted order.\n", value);
 }
 
+void insertBeforePosition(int value) {
+    int pos, i = 1;
+    printf("Enter position to insert before: ");
+    scanf("%d", &pos);
+
+    struct Node* newNode = createNode(value);
+
+    if (head == NULL || pos <= 1) {
+        newNode->next = head;
+        if (head != NULL)
+            head->prev = newNode;
+        head = newNode;
+        printf("Inserted %d at beginning (pos %d).\n", value, pos);
+        return;
+    }
+
+    struct Node* temp = head;
+    while (temp != NULL && i < pos - 1) {
+        temp = temp->next;
+        i++;
+    }
+
+    if (temp == NULL) {
+        printf("Position out of bounds. Inserting at end.\n");
+        insertAtEnd(value);
+        free(newNode); // prevent memory leak
+        return;
+    }
+
+    newNode->next = temp->next;
+    if (temp->next != NULL)
+        temp->next->prev = newNode;
+    temp->next = newNode;
+    newNode->prev = temp;
+
+    printf("Inserted %d before position %d.\n", value, pos);
+}
+
+
+void insertAfterPosition(int value) {
+    int pos, i = 1;
+    printf("Enter position to insert after: ");
+    scanf("%d", &pos);
+
+    if (head == NULL) {
+        head = createNode(value);
+        printf("List was empty. Inserted %d as first node.\n", value);
+        return;
+    }
+
+    struct Node* temp = head;
+    while (temp != NULL && i < pos) {
+        temp = temp->next;
+        i++;
+    }
+
+    if (temp == NULL) {
+        printf("Position out of bounds. Inserting at end.\n");
+        insertAtEnd(value);
+        return;
+    }
+
+    struct Node* newNode = createNode(value);
+    newNode->next = temp->next;
+    if (temp->next != NULL)
+        temp->next->prev = newNode;
+    temp->next = newNode;
+    newNode->prev = temp;
+
+    printf("Inserted %d after position %d.\n", value, pos);
+}
+
+
+
 // Count nodes
 void countNodes() {
     int count = 0;
@@ -151,53 +225,78 @@ void displayList() {
 // Main menu
 int main() {
     int choice, value;
-
-    while (1) {
-        printf("\n--- Doubly Linked List Menu ---\n");
+    printf("\n--- Doubly Linked List Menu ---\n");
         printf("1. Insert at Beginning\n");
         printf("2. Insert at End\n");
         printf("3. Insert in Sorted Order\n");
-        printf("4. Count Nodes\n");
-        printf("5. Reverse List\n");
-        printf("6. Delete from Beginning\n");
-        printf("7. Delete from End\n");
-        printf("8. Display List\n");
-        printf("9. Exit\n");
+        printf("4. Insert Before Position\n");
+        printf("5. Insert After Position\n");
+        printf("6. Count Nodes\n");
+        printf("7. Reverse List\n");
+        printf("8. Delete from Beginning\n");
+        printf("9. Delete from End\n");
+        printf("10. Display List\n");
+        printf("11. Exit\n");
+        printf("===================================\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
+    while (1) {
+        
+
         switch (choice) {
             case 1:
+                printf("===================================\n");
                 printf("Enter value: ");
                 scanf("%d", &value);
                 insertAtBeginning(value);
                 break;
             case 2:
+                printf("===================================\n");
                 printf("Enter value: ");
                 scanf("%d", &value);
                 insertAtEnd(value);
                 break;
             case 3:
+                printf("===================================\n");
                 printf("Enter value: ");
                 scanf("%d", &value);
                 insertSorted(value);
                 break;
             case 4:
-                countNodes();
+                printf("===================================\n");
+                printf("Enter value: ");
+                scanf("%d", &value);
+                insertBeforePosition(value);
                 break;
             case 5:
-                reverseList();
+                printf("===================================\n");
+                printf("Enter value: ");
+                scanf("%d", &value);
+                insertAfterPosition(value);
                 break;
             case 6:
-                deleteFromBeginning();
+                printf("===================================\n");
+                countNodes();
                 break;
             case 7:
-                deleteFromEnd();
+                printf("===================================\n");
+                reverseList();
                 break;
             case 8:
-                displayList();
+                printf("===================================\n");
+                deleteFromBeginning();
                 break;
             case 9:
+                printf("===================================\n");
+                deleteFromEnd();
+                break;
+            case 10:
+                printf("===================================\n");
+                displayList();
+                break;
+            case 11:
+                printf("===================================\n");
                 printf("Exiting...\n");
                 exit(0);
             default:
